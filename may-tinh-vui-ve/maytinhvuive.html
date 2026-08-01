@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máy Tính Vui Vẻ</title>
+    <style>
+        body {
+            background-color: #121212; 
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .may-tinh {
+            background-color: #1e1e1e; 
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.7);
+            width: 380px;
+            border: 1px solid #333333;
+        }
+        .khung-man-hinh {
+            width: 100%;
+            height: 75px;
+            background-color: #ffffff;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            padding: 8px 15px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        #man-hinh-phu {
+            font-size: 14px;
+            color: #888888;
+            text-align: right;
+            height: 20px;
+        }
+        #man-hinh-chinh {
+            font-size: 30px;
+            color: #000000;
+            text-align: right;
+            font-weight: bold;
+            height: 35px;
+            line-height: 35px;
+        }
+        .hang-nut {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        button {
+            height: 52px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            background-color: #333333; 
+            transition: background 0.1s;
+        }
+        button:hover { background-color: #444444; }
+        .nut-ca { background-color: #ff3b30; }
+        .nut-ca:hover { background-color: #d32f2f; }
+        .nut-back { background-color: #ff9500; }
+        .nut-back:hover { background-color: #e08400; }
+        .nut-toan-hoc { color: #ffcc00; background-color: #555555; }
+        .nut-toan-hoc:hover { background-color: #666666; }
+        .nut-phep-tinh { background-color: #4a90e2; }
+        .nut-phep-tinh:hover { background-color: #357abd; }
+        .nut-bang { background-color: #5cb85c; grid-column: span 2; }
+        .nut-bang:hover { background-color: #4cae4c; }
+        
+        /* Hiệu ứng rê chuột vào chữ Góp ý */
+        .link-gop-y:hover { text-decoration: underline !important; opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+    <div class="may-tinh">
+        <div class="khung-man-hinh">
+            <div id="man-hinh-phu"></div> 
+            <div id="man-hinh-chinh">0</div> 
+        </div>
+
+        <div class="hang-nut">
+            <button class="nut-toan-hoc" onclick="nhap('(')">(</button>
+            <button class="nut-toan-hoc" onclick="nhap(')')">)</button>
+            <button class="nut-back" onclick="xoaLui()">←</button>
+            <button class="nut-ca" onclick="xoaHet()">CA</button>
+
+            <button class="nut-toan-hoc" onclick="binhPhuong()">x²</button>
+            <button class="nut-toan-hoc" onclick="canBacHai()">√</button>
+            <button class="nut-toan-hoc" onclick="nhap('%')">%</button>
+            <button class="nut-phep-tinh" onclick="nhap('÷')">÷</button>
+
+            <button onclick="nhap('7')">7</button>
+            <button onclick="nhap('8')">8</button>
+            <button onclick="nhap('9')">9</button>
+            <button class="nut-phep-tinh" onclick="nhap('×')">×</button>
+
+            <button onclick="nhap('4')">4</button>
+            <button onclick="nhap('5')">5</button>
+            <button onclick="nhap('6')">6</button>
+            <button class="nut-phep-tinh" onclick="nhap('-')">-</button>
+
+            <button onclick="nhap('1')">1</button>
+            <button onclick="nhap('2')">2</button>
+            <button onclick="nhap('3')">3</button>
+            <button class="nut-phep-tinh" onclick="nhap('+')">+</button>
+
+            <button onclick="nhap('0')">0</button>
+            <button onclick="nhap('.')">.</button>
+            <button class="nut-bang" onclick="tinhKetQua()">=</button>
+        </div>
+
+        <!-- DÒNG CHỮ GÓP Ý ĐÃ ĐƯỢC CHÈN GMAIL CỦA BẠN -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a class="link-gop-y" href="mailto:daonuilua28@://gmail.com ý về ứng dụng Máy Tính Online" 
+               style="color: #4a90e2; text-decoration: none; font-size: 14px; font-weight: bold; transition: all 0.2s;">
+               📧 Gửi góp ý qua Gmail
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let manHinhChinh = document.getElementById('man-hinh-chinh');
+        let manHinhPhu = document.getElementById('man-hinh-phu');
+        let daTinhXong = false;
+
+        function nhap(giaTri) {
+            if (daTinhXong) {
+                manHinhChinh.innerText = '0';
+                manHinhPhu.innerText = '';
+                daTinhXong = false;
+            }
+            if (manHinhChinh.innerText === '0' && giaTri !== '.') {
+                manHinhChinh.innerText = giaTri;
+            } else {
+                manHinhChinh.innerText += giaTri;
+            }
+        }
+
+        function xoaHet() {
+            manHinhChinh.innerText = '0';
+            manHinhPhu.innerText = '';
+            daTinhXong = false;
+        }
+
+        function xoaLui() {
+            if (daTinhXong) return;
+            if (manHinhChinh.innerText.length > 1) {
+                manHinhChinh.innerText = manHinhChinh.innerText.slice(0, -1);
+            } else {
+                manHinhChinh.innerText = '0';
+            }
+        }
+
+        function binhPhuong() {
+            let bieuThuc = manHinhChinh.innerText.replace(/×/g, '*').replace(/÷/g, '/').replace(/%/g, '/100');
+            manHinhPhu.innerText = manHinhChinh.innerText + '² =';
+            manHinhChinh.innerText = eval(bieuThuc) * eval(bieuThuc);
+            daTinhXong = true;
+        }
+
+        function canBacHai() {
+            let bieuThuc = manHinhChinh.innerText.replace(/×/g, '*').replace(/÷/g, '/').replace(/%/g, '/100');
+            manHinhPhu.innerText = '√(' + manHinhChinh.innerText + ') =';
+            manHinhChinh.innerText = Math.sqrt(eval(bieuThuc));
+            daTinhXong = true;
+        }
+
+        function tinhKetQua() {
+            try {
+                let bieuThucGoc = manHinhChinh.innerText;
+                let bieuThucMayTinh = bieuThucGoc.replace(/×/g, '*').replace(/÷/g, '/').replace(/%/g, '/100');
+                manHinhPhu.innerText = bieuThucGoc + ' =';
+                manHinhChinh.innerText = eval(bieuThucMayTinh);
+                daTinhXong = true;
+            } catch (error) {
+                manHinhChinh.innerText = "Lỗi";
+            }
+        }
+    </script>
+
+</body>
+</html>
